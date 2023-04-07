@@ -104,15 +104,19 @@ function completeSend(results) {
 function sendText() {
     var message = document.getElementById('message').value;
     console.log("Send: "+myname+":"+message);
-	fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
-        method: 'get'
-    })
-    .then (response => response.json() )
-    .then (data =>completeSend(data))
-    .catch(error => {
-        {alert("Error: Something went wrong:"+error);}
-    })    
-
+    if (message) {
+        fetch(baseUrl+'/chat/send/'+myname+'/'+encodeURIComponent(message), {
+            method: 'get'
+        })
+        .then (response => response.json() )
+        .then (data => {
+            completeSend(data);
+            document.getElementById('message').value = '';
+        })
+        .catch(error => {
+            {alert("Error: Something went wrong:"+error);}
+        }) 
+    }  
 }
 
 function completeFetch(result) {
