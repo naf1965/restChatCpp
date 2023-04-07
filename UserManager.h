@@ -13,6 +13,7 @@ public:
     bool registerUser(const std::string &username, const std::string &email, const std::string &password, std::string &error);
     bool loginUser(const std::string &username, const std::string &password, std::string &error);
     bool userExists(const std::string &username);
+    const std::unordered_set<std::string> getUsers() const;
 };
 
 #endif // USERMANAGER_H
