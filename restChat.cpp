@@ -43,17 +43,18 @@ string getMessagesJSON(string username, map<string,vector<string>> &messageMap) 
 	return result;
 }
 
-string getUsersJSON(const map<string, vector<string>> &messageMap) {
+string getUsersJSON(UserManager &userManager) {
   bool first = true;
   string result = "[";
-  for (const auto &userMessagePair : messageMap) {
+  for (const auto &user : userManager.getUsers()) {
     if (!first) result += ",";
-    result += "\"" + userMessagePair.first + "\"";
+    result += "\"" + user + "\"";
     first = false;
   }
   result += "]";
   return result;
 }
+
 
 
 
