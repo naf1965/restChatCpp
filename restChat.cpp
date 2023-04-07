@@ -158,9 +158,9 @@ int main(void) {
   
    svr.Get(R"(/chat/fetch/(.*))", [&](const Request& req, Response& res) {
   string username = req.matches[1];
-  res.set_header("Access-Control-Allow-Origin","*");
+  res.set_header("Access-Control-Allow-Origin", "*");
   string messagesJSON = getMessagesJSON(username, messageMap);
-  string usersJSON = getUsersJSON(messageMap);
+  string usersJSON = getUsersJSON(userManager);
   string resultJSON = "{\"messages\":" + messagesJSON + ",\"users\":" + usersJSON + "}";
   res.set_content(resultJSON, "text/json");
 });
