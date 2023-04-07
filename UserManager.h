@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <unordered_set>
 
 class UserManager {
 private:
