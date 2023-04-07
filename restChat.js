@@ -129,7 +129,9 @@ function completeFetch(result) {
     document.getElementById('chatBox').innerHTML +=
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
+  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 }
+
 function registerUser() {
   var username = document.getElementById('orangeForm-name').value;
   var email = document.getElementById('orangeForm-email').value;
