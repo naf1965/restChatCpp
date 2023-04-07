@@ -123,15 +123,17 @@ function completeFetch(result) {
   messages = result["messages"];
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
+
+  // Clear the chatBox element before appending messages
+  document.getElementById('chatBox').innerHTML = '';
+
   messages.forEach(function (m, i) {
     name = m['name'];
     message = m['text'];
     document.getElementById('chatBox').innerHTML +=
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
-  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 }
-
 function registerUser() {
   var username = document.getElementById('orangeForm-name').value;
   var email = document.getElementById('orangeForm-email').value;
