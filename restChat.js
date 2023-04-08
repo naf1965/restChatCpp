@@ -28,7 +28,10 @@ document.getElementById('send-btn').addEventListener("click", sendText);
 // Watch for enter on message box
 document.getElementById('message').addEventListener("keydown", (e)=> {
     if (e.code == "Enter") {
+	e.preventDefault();
 	sendText();
+	document.getElementById('message').value=""
+	return false;   
     }   
 });
 
@@ -104,19 +107,15 @@ function completeSend(results) {
 function sendText() {
     var message = document.getElementById('message').value;
     console.log("Send: "+myname+":"+message);
-    if (message) {
-        fetch(baseUrl+'/chat/send/'+myname+'/'+encodeURIComponent(message), {
-            method: 'get'
-        })
-        .then (response => response.json() )
-        .then (data => {
-            completeSend(data);
-            document.getElementById('message').value = '';
-        })
-        .catch(error => {
-            {alert("Error: Something went wrong:"+error);}
-        }) 
-    }  
+	fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
+        method: 'get'
+    })
+    .then (response => response.json() )
+    .then (data => completeSend(data))
+    .catch(error => {
+        {alert("Error: Something went wrong:"+error);}
+    })    
+	document.getElementById('message').value = "";
 }
 
 function completeFetch(result) {
