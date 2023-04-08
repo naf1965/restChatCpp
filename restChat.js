@@ -123,7 +123,7 @@ function completeFetch(result) {
   messages = result["messages"];
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
-
+    console.log("messages:", messages);
 
   messages.forEach(function (m, i) {
     name = m['name'];
