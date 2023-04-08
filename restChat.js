@@ -161,7 +161,7 @@ function fetchMessage() {
     .then (response => response.json() )
     .then (data =>completeFetch(data))
     .catch(error => {
-        {console.log("Server appears down");}
+        {console.log("Server appears down:", error);}
     })  	
 }
 /* Functions to set up visibility of sections of the display */
