@@ -123,8 +123,6 @@ function completeFetch(result) {
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
 
-  // Clear the chatBox element before appending messages
-  document.getElementById('chatBox').innerHTML = '';
 
   messages.forEach(function (m, i) {
     name = m['name'];
