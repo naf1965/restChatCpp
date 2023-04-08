@@ -125,8 +125,8 @@ function completeFetch(result) {
   document.getElementById('members').innerHTML = users.join(", ");
 
   messages.forEach(function (m, i) {
-    name = m['name'];
-    message = m['text'];
+    name = m['user'];
+    message = m['message'];
     document.getElementById('chatBox').innerHTML +=
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
