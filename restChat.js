@@ -119,11 +119,10 @@ function sendText() {
 }
 
 function completeFetch(result) {
-  console.log(result);
-  messages = result["messages"];
+  // Access the inner "messages" object
+  messages = result["messages"]["messages"];
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
-    console.log("messages:", messages);
 
   messages.forEach(function (m, i) {
     name = m['name'];
@@ -132,6 +131,7 @@ function completeFetch(result) {
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
 }
+
 function registerUser() {
   var username = document.getElementById('orangeForm-name').value;
   var email = document.getElementById('orangeForm-email').value;
