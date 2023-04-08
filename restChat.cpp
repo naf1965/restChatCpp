@@ -162,6 +162,10 @@ int main(void) {
   string messagesJSON = getMessagesJSON(username, messageMap);
   string usersJSON = getUsersJSON(userManager);
   string resultJSON = "{\"messages\":" + messagesJSON + ",\"users\":" + usersJSON + "}";
+  // Add debug print statements
+  cout << "messagesJSON: " << messagesJSON << endl;
+  cout << "usersJSON: " << usersJSON << endl;
+  cout << "resultJSON: " << resultJSON << endl;	   
   res.set_content(resultJSON, "text/json");
 });
 
