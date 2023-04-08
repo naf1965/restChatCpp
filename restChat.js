@@ -119,6 +119,7 @@ function sendText() {
 }
 
 function completeFetch(result) {
+  console.log(result);
   messages = result["messages"];
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
