@@ -21,12 +21,22 @@ const int port = 5005;
 UserManager userManager;
 
 void addMessage(string username, string message, map<string,vector<string>> &messageMap) {
-	/* iterate through users adding message to each */
-	string jsonMessage = "{\"user\":\""+username+"\",\"message\":\""+message+"\"}";
-	for (auto userMessagePair : messageMap) {
-		username = userMessagePair.first;
-		messageMap[username].push_back(jsonMessage);
-	}
+    /* iterate through users adding message to each */
+	cout << "Adding message from user: " << username << " with message: " << message << endl; // Add this line
+    string jsonMessage = "{\"user\":\""+username+"\",\"message\":\""+message+"\"}";
+    for (auto userMessagePair : messageMap) {
+        string recipientUsername = userMessagePair.first;
+        messageMap[recipientUsername].push_back(jsonMessage);
+    }
+	cout << "Message added: " << jsonMessage << endl;
+}
+
+
+void removeUser(string username, map<string, vector<string>> &messageMap) {
+    if (messageMap.count(username) > 0) {
+        messageMap.erase(username);
+        cout << "User " << username << " has left the chat room." << endl;
+    }
 }
 
 string getMessagesJSON(string username, map<string,vector<string>> &messageMap) {
@@ -53,6 +63,26 @@ string getUsersJSON(UserManager &userManager) {
   }
   result += "]";
   return result;
+}
+
+string decodeURIComponent(const string &encoded) {
+  string decoded;
+  char ch;
+  int i, j, ix;
+  for (i = 0; i < encoded.length(); i++) {
+    ch = encoded.at(i);
+    if (ch == '+') {
+      decoded += ' ';
+    } else if (ch == '%') {
+      sscanf(encoded.substr(i + 1, 2).c_str(), "%x", &ix);
+      ch = static_cast<char>(ix);
+      decoded += ch;
+      i += 2;
+    } else {
+      decoded += ch;
+    }
+  }
+  return decoded;
 }
 
 
@@ -141,33 +171,36 @@ int main(void) {
 
 
 
-   svr.Get(R"(/chat/send/(.*)/(.*))", [&](const Request& req, Response& res) {
-    res.set_header("Access-Control-Allow-Origin","*");
-	string username = req.matches[1];
-	string message = req.matches[2];
-	string result; 
-	
-    if (!messageMap.count(username)) {
-    	result = "{\"status\":\"baduser\"}";
-	} else {
-		addMessage(username,message,messageMap);
-		result = "{\"status\":\"success\"}";
-	}
-    res.set_content(result, "text/json");
-  });
-  
+ svr.Get(R"(/chat/send/(.*)/(.*))", [&](const Request& req, Response& res) {
+  res.set_header("Access-Control-Allow-Origin", "*");
+  string username = decodeURIComponent(req.matches[1]);
+  string message = decodeURIComponent(req.matches[2]);
+  string result;
+
+  if (!messageMap.count(username)) {
+    result = "{\"status\":\"baduser\"}";
+  } else {
+    addMessage(username, message, messageMap);
+    result = "{\"status\":\"success\"}";
+  }
+  res.set_content(result, "text/json");
+});
+
    svr.Get(R"(/chat/fetch/(.*))", [&](const Request& req, Response& res) {
   string username = req.matches[1];
   res.set_header("Access-Control-Allow-Origin", "*");
   string messagesJSON = getMessagesJSON(username, messageMap);
   string usersJSON = getUsersJSON(userManager);
   string resultJSON = "{\"messages\":" + messagesJSON + ",\"users\":" + usersJSON + "}";
-  // Add debug print statements
-  cout << "messagesJSON: " << messagesJSON << endl;
-  cout << "usersJSON: " << usersJSON << endl;
-  cout << "resultJSON: " << resultJSON << endl;	   
   res.set_content(resultJSON, "text/json");
 });
+   svr.Get(R"(/chat/leave/(.*))", [&](const Request& req, Response& res) {
+  string username = req.matches[1];
+  removeUser(username, messageMap);
+  res.set_header("Access-Control-Allow-Origin", "*");
+  res.set_content("{\"status\":\"success\"}", "text/json");
+});
+
 
   
   cout << "Server listening on port " << port << endl;

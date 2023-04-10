@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <map>
-#include <unordered_set>
 
 class UserManager {
 private:
@@ -14,7 +13,8 @@ public:
     bool registerUser(const std::string &username, const std::string &email, const std::string &password, std::string &error);
     bool loginUser(const std::string &username, const std::string &password, std::string &error);
     bool userExists(const std::string &username);
-    const std::unordered_set<std::string> getUsers() const;
+	void logoutUser(const std::string &username);
+	
 };
 
 #endif // USERMANAGER_H

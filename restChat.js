@@ -106,7 +106,6 @@ function completeSend(results) {
 //function called on submit or enter on text input
 function sendText() {
     var message = document.getElementById('message').value;
-    console.log("Send: "+myname+":"+message);
 	fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
         method: 'get'
     })
@@ -123,10 +122,9 @@ function completeFetch(result) {
   messages = result["messages"]["messages"];
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
-
   messages.forEach(function (m, i) {
-    name = m['user'];
-    message = m['message'];
+	var name = m['user'];
+	var message = m['message'];
     document.getElementById('chatBox').innerHTML +=
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
@@ -153,22 +151,29 @@ function registerUser() {
   })
 }
 
-
-/* Check for new messaged */
-function fetchMessage() {
-	fetch(baseUrl+'/chat/fetch/'+myname, {
-        method: 'get'
-    })
-    .then (response => response.json() )
-    .then (data =>completeFetch(data))
-    .catch(error => {
-        {console.log("Server appears down:", error);}
-    })  	
+function updateMembersList(users) {
+  document.getElementById('members').innerHTML = users.join(", ");
 }
+/* Check for new messaged */
+/* Check for new messages */
+function fetchMessage() {
+  fetch(baseUrl+'/chat/fetch/'+myname, {
+    method: 'get'
+  })
+  .then(response => response.json())
+  .then(data => {
+    completeFetch(data);
+    updateMembersList(data.users); // Add this line
+  })
+  .catch(error => {
+    {console.log("Server appears down:", error);}
+  })    
+}
+
 /* Functions to set up visibility of sections of the display */
 function startSession(name){
     state="on";
-    
+    myname = name; 
     document.getElementById('yourname').value = "";
     document.getElementById('register').style.display = 'none';
     document.getElementById('user').innerHTML = "User: " + name;
@@ -182,6 +187,13 @@ function startSession(name){
 
 function leaveSession(){
     state="off";
+	  if (myname) {
+    fetch(baseUrl + "/chat/leave/" + myname, {
+      method: "get",
+    }).catch((error) => {
+      console.log("Error: Something went wrong:", error);
+    });
+  }
     
     document.getElementById('yourname').value = "";
     document.getElementById('register').style.display = 'block';

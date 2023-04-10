@@ -43,10 +43,9 @@ bool UserManager::loginUser(const std::string &username, const std::string &pass
 bool UserManager::userExists(const std::string &username) {
     return userCredentials.count(username) > 0;
 }
-const std::unordered_set<std::string> UserManager::getUsers() const {
-    std::unordered_set<std::string> userNames;
-    for (const auto& user : userCredentials) {
-        userNames.insert(user.first);
-    }
-    return userNames;
+
+void UserManager::logoutUser(const std::string &username) {
+  if (userCredentials.count(username) > 0) {
+    userCredentials.erase(username);
+  }
 }
