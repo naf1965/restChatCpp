@@ -2,7 +2,7 @@
 // Jim Skon 2022
 // Kenyon College
 
-var baseUrl = 'http://3.15.139.27:5005';
+var baseUrl = 'http://3.143.218.37:5005';
 var state="off";
 var myname="";
 var inthandle;
@@ -17,7 +17,7 @@ document.getElementById('leave').style.display = 'none';
 
 // Action if they push the join button
 document.getElementById('login-btn').addEventListener("click", (e) => {
-	loginUser();
+loginUser();
 })
 
 
@@ -28,11 +28,11 @@ document.getElementById('send-btn').addEventListener("click", sendText);
 // Watch for enter on message box
 document.getElementById('message').addEventListener("keydown", (e)=> {
     if (e.code == "Enter") {
-	e.preventDefault();
-	sendText();
-	document.getElementById('message').value=""
-	return false;   
-    }   
+e.preventDefault();
+sendText();
+document.getElementById('message').value=""
+return false;  
+    }  
 });
 
 document.querySelector("#loginModal .btn-primary").addEventListener("click", registerUser);
@@ -43,15 +43,15 @@ window.onbeforeunload = leaveSession;
 
 
 function completeJoin(results) {
-	var status = results['status'];
-	if (status != "success") {
-		alert("Username already exists!");
-		leaveSession();
-		return;
-	}
-	var user = results['user'];
-	console.log("Join:"+user);
-	startSession(user);
+var status = results['status'];
+if (status != "success") {
+alert("Username already exists!");
+leaveSession();
+return;
+}
+var user = results['user'];
+console.log("Join:"+user);
+startSession(user);
 }
 
 function join() {
@@ -95,18 +95,18 @@ function loginUser() {
 
 
 function completeSend(results) {
-	var status = results['status'];
-	if (status == "success") {
-		console.log("Send succeeded")
-	} else {
-		alert("Error sending message!");
-	}
+var status = results['status'];
+if (status == "success") {
+console.log("Send succeeded")
+} else {
+alert("Error sending message!");
+}
 }
 
 //function called on submit or enter on text input
 function sendText() {
     var message = document.getElementById('message').value;
-	fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
+fetch(baseUrl+'/chat/send/'+myname+'/'+message, {
         method: 'get'
     })
     .then (response => response.json() )
@@ -114,7 +114,7 @@ function sendText() {
     .catch(error => {
         {alert("Error: Something went wrong:"+error);}
     })    
-	document.getElementById('message').value = "";
+document.getElementById('message').value = "";
 }
 
 function completeFetch(result) {
@@ -123,8 +123,8 @@ function completeFetch(result) {
   users = result["users"];
   document.getElementById('members').innerHTML = users.join(", ");
   messages.forEach(function (m, i) {
-	var name = m['user'];
-	var message = m['message'];
+var name = m['user'];
+var message = m['message'];
     document.getElementById('chatBox').innerHTML +=
       "<font color='red'>" + name + ": </font>" + message + "<br />";
   });
@@ -151,9 +151,7 @@ function registerUser() {
   })
 }
 
-function updateMembersList(users) {
-  document.getElementById('members').innerHTML = users.join(", ");
-}
+
 /* Check for new messaged */
 /* Check for new messages */
 function fetchMessage() {
@@ -163,7 +161,6 @@ function fetchMessage() {
   .then(response => response.json())
   .then(data => {
     completeFetch(data);
-    updateMembersList(data.users); // Add this line
   })
   .catch(error => {
     {console.log("Server appears down:", error);}
@@ -173,7 +170,7 @@ function fetchMessage() {
 /* Functions to set up visibility of sections of the display */
 function startSession(name){
     state="on";
-    myname = name; 
+    myname = name;
     document.getElementById('yourname').value = "";
     document.getElementById('register').style.display = 'none';
     document.getElementById('user').innerHTML = "User: " + name;
@@ -187,24 +184,24 @@ function startSession(name){
 
 function leaveSession(){
     state="off";
-	  if (myname) {
+ if (myname) {
     fetch(baseUrl + "/chat/leave/" + myname, {
       method: "get",
     }).catch((error) => {
       console.log("Error: Something went wrong:", error);
     });
   }
-    
+   
     document.getElementById('yourname').value = "";
     document.getElementById('register').style.display = 'block';
     document.getElementById('user').innerHTML = "";
     document.getElementById('chatinput').style.display = 'none';
     document.getElementById('status').style.display = 'none';
     document.getElementById('leave').style.display = 'none';
-	clearInterval(inthandle);
+clearInterval(inthandle);
 }
 
 function toggleDarkMode() {
-	var element = document.body;
-   	element.classList.toggle("darkMode");
+var element = document.body;
+    element.classList.toggle("darkMode");
 }
