@@ -3,6 +3,11 @@ h2, h3, p {
     font-family: Verdana, sans-serif;
 }
 
+body {
+  background-color: white;
+  color: black;
+}
+
 .small {
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 60%;
@@ -18,9 +23,26 @@ h2, h3, p {
 /* Scroll Box attributes */
 .scrollabletextbox {
     background-color: #e6b3ff;
-    height: 300px;
-    width: 400px;
+    color: black;
+    height: 400px;
+    width: 700px;
     font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
     font-size: 82%;
     overflow:scroll;
+    margin: auto;
+    padding: 1%;
+}
+
+.darkMode {
+    background-color: black;
+    color: white;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+}
+
+.alignLeft {
+	float: left;
+}
+
+.alignRight {
+	float: right;
 }
