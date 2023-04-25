@@ -30,7 +30,7 @@ class userDB {
 public:
     userDB();
     vector<userEntry> find(string email);
-    contactEntry fetchEntry(string id);
+    userEntry fetchEntry(string id);
     void addEntry(string username,string email,string password);
 private:
     const string db_url=DB_URL;
