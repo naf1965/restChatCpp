@@ -12,7 +12,7 @@ public:
      string text();
      string json();
      
-     string name;
+     string username;
      string ID;
      string email;
      string password;
