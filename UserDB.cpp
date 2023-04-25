@@ -6,7 +6,7 @@
 
 
 
-userDB::userDB() {
+UserDB::UserDB() {
   	// Instantiate Driver
   	driver = sql::mariadb::get_driver_instance();
   	
@@ -34,7 +34,7 @@ userDB::userDB() {
    	
 }
 
-vector<userEntry> userDB::find(string search) {
+vector<userEntry> UserDB::find(string search) {
 
 	vector<userEntry> list;
     
@@ -64,7 +64,7 @@ vector<userEntry> userDB::find(string search) {
 
 }
 
-vector<userEntry> userDB::findByEmail(string email) {
+vector<userEntry> UserDB::findByEmail(string email) {
 	vector<userEntry> list;
 	
     // Make sure the connection is still valid
@@ -90,7 +90,7 @@ vector<userEntry> userDB::findByEmail(string email) {
 
 }
 
-void contactDB::addEntry(string username,string email,string password){
+void UserDB::addEntry(string username,string email,string password){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
@@ -102,7 +102,7 @@ void contactDB::addEntry(string username,string email,string password){
   	stmnt->executeQuery("INSERT INTO userInfo(Username,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
 }
 
-userEntry userDB::fetchEntry(string id){
+userEntry UserDB::fetchEntry(string id){
 
 	contactEntry entry;	
 	
