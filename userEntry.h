@@ -2,27 +2,24 @@
 #include <string>
 using namespace std;
 
-#ifndef CONTACTENTRY_H
-#define CONTACTENTRY_H
+#ifndef USERENTRY_H
+#define USERENTRY_H
 
-class contactEntry {
+class userEntry {
 public:
-     contactEntry();
-     contactEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t,sql::SQLString I,sql::SQLString e,sql::SQLString s);
+     userEntry();
+     userEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t,sql::SQLString I,sql::SQLString e,sql::SQLString s);
      string text();
      string json();
      
-     string first;
-     string last;
-     string phone;
-     string type;
+     string name;
      string ID;
      string email;
-     string social;
+     string password;
 
 private:
 
 };
 
-#endif /* CONTACTENTRY_H */
+#endif /* USERENTRY_H */
 
