@@ -8,7 +8,7 @@ using namespace std;
 class userEntry {
 public:
      userEntry();
-     userEntry(sql::SQLString f, sql::SQLString l, sql::SQLString p, sql::SQLString t,sql::SQLString I,sql::SQLString e,sql::SQLString s);
+     userEntry(sql::SQLString n, sql::SQLString e, sql::SQLString p, sql::SQLString I);
      string text();
      string json();
      
