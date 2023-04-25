@@ -11,6 +11,8 @@
 #include <algorithm>
 #include "httplib.h"
 #include "UserManager.h"
+#include "userEntry.h"
+#incldue "UserDB.h"
 
 
 
@@ -98,7 +100,7 @@ int main(void) {
     res.set_header("Access-Control-Allow-Origin","*");
     res.set_content("Chat API", "text/plain");
   });
-  svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& res) {
+svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
     string username = req.matches[1];
     string email = req.matches[2];
@@ -110,12 +112,14 @@ int main(void) {
     // Return the appropriate response
     string result;
     if (registrationSuccessful) {
+        addEntry(username, email, password); // Call addEntry function here
         result = "{\"status\":\"success\"}";
     } else {
         result = "{\"status\":\"fail\",\"error\":\"" + error + "\"}";
     }
     res.set_content(result, "text/json");
-	});
+});
+
 	
 	svr.Get(R"(/chat/login/(.*)/(.*))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
