@@ -80,7 +80,7 @@ vector<userEntry> userDB::findByEmail(string email) {
     
     // Loop through and print results
     while (res->next()) {
-    	userEntry entry(res->getString("Name"),res->getString("Email"),
+    	userEntry entry(res->getString("Username"),res->getString("Email"),
 			res->getString("Password"),res->getString("ID"));
 	    	
 	    list.push_back(entry);
@@ -90,7 +90,7 @@ vector<userEntry> userDB::findByEmail(string email) {
 
 }
 
-void contactDB::addEntry(string name,string email,string password){
+void contactDB::addEntry(string username,string email,string password){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
@@ -99,7 +99,7 @@ void contactDB::addEntry(string name,string email,string password){
 
   	std::auto_ptr<sql::Statement> stmnt(conn->createStatement());
 
-  	stmnt->executeQuery("INSERT INTO userInfo(Name,Email,Password) VALUES ('"+name+"','"+email+"','"+password+"')");
+  	stmnt->executeQuery("INSERT INTO userInfo(Username,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
 }
 
 userEntry userDB::fetchEntry(string id){
@@ -118,7 +118,7 @@ userEntry userDB::fetchEntry(string id){
     
     // Get first entry
     if (res->next()) {
-    	entry = userEntry(res->getString("Name"),res->getString("Email"),
+    	entry = userEntry(res->getString("Username"),res->getString("Email"),
 			res->getString("Password"),res->getString("ID"));
     }
     return entry;
