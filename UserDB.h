@@ -20,7 +20,7 @@
 #ifndef USERDB_H
 #define USERDB_H
 
-#define DB_URL "jdbc:mariadb://localhost:3306/kenyon"
+#define DB_URL "jdbc:mariadb://localhost:3306/userInfo"
 #define USER "root"
 #define PASS "newpassword"
 
@@ -31,7 +31,7 @@ public:
     userDB();
     vector<userEntry> find(string email);
     contactEntry fetchEntry(string id);
-    void addEntry(string name,string email,string password);
+    void addEntry(string username,string email,string password);
 private:
     const string db_url=DB_URL;
     const string user=USER;
