@@ -47,4 +47,5 @@ private:
 
 };
 
+
 #endif /* contactDB_H */
