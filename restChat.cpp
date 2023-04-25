@@ -112,7 +112,7 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     // Return the appropriate response
     string result;
     if (registrationSuccessful) {
-        userDB.addEntry(username, email, password); // Call addEntry function here
+        UserDB.addEntry(username, email, password); // Call addEntry function here
         result = "{\"status\":\"success\"}";
     } else {
         result = "{\"status\":\"fail\",\"error\":\"" + error + "\"}";
