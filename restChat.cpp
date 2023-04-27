@@ -21,7 +21,7 @@ using namespace std;
 
 const int port = 5005;
 UserManager userManager;
-UserDB UserDB;
+UserDB userDB;
 
 void addMessage(string username, string message, map<string,vector<string>> &messageMap) {
     /* iterate through users adding message to each */
@@ -113,7 +113,7 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     // Return the appropriate response
     string result;
     if (registrationSuccessful) {
-        UserDB.addEntry(username, email, password); // Call addEntry function here
+        userDB.addEntry(username, email, password); // Call addEntry function here
         result = "{\"status\":\"success\"}";
     } else {
         result = "{\"status\":\"fail\",\"error\":\"" + error + "\"}";
