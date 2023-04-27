@@ -29,9 +29,9 @@ using namespace std;
 class userDB {
 public:
     userDB();
-    bool confirm(string user, string pass);
     userEntry fetchEntry(string id);
-    void addEntry(string username,string email,string password);
+    bool confirmUser(string user, string pass);
+    void registerUser(string username,string email,string password);
 private:
     const string db_url=DB_URL;
     const string user=USER;
