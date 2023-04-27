@@ -44,19 +44,17 @@ bool userDB::confirmUser(string user, string pass ) {
    	}	
     // Create a new Statement
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
-    cout<<"bfr qry"<<endl;
     
     // Execute query
     sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM User_table WHERE username = '"+user+"'and pass = '"+pass+"'");
-    cout<<"aft qry"<<endl;
 	
 	if(res->next()){
 
-	return true;
-}else{
-return false;
+		return true;
+	}else{
+		return false;
+	}
 }
-
 
 void userDB::registerUser(string username,string email,string password){
 
