@@ -112,8 +112,11 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     string email = req.matches[2];
     string password = req.matches[3];
     string error;
+	
+	// Calls registerUser function from userDB. This should add the user to the database!
 	userObject.registerUser(username,email,password);
-    bool registrationSuccessful = userManager.registerUser(username, email, password, error);
+	
+    bool registrationSuccessful = userManager.registerUser(username, email, password, error); //This may need to be changed or removed!
 	
 
     // Return the appropriate response
@@ -134,6 +137,8 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     string password = req.matches[2];
     string error;
 	string result;
+	
+	// This called confirmUser from userDB. This should retreive the user from the database in order to log them in.
 	userObject.confirmUser(username,password);
     if (!userManager.userExists(username)) {
         result = "{\"status\":\"fail\",\"error\":\"User not registered\"}";
@@ -159,6 +164,7 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
   string result;
 
   // Check if user with this name exists
+	// This may need to be removed. 
   if (!userManager.userExists(username)) {
     result = "{\"status\":\"fail\",\"error\":\"User not registered\"}";
   } else {
