@@ -30,8 +30,8 @@ class userDB {
 public:
     userDB();
     userEntry fetchEntry(string id);
-    bool confirmUser(string user, string pass);
-    void registerUser(string username,string email,string password);
+    bool confirmUser(string user, string pass); // Called in restChat.cpp in the login microservice
+    void registerUser(string username,string email,string password); // Called in restChat.cpp in the register microservice
 private:
     const string db_url=DB_URL;
     const string user=USER;
