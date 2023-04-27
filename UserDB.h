@@ -20,7 +20,7 @@
 #ifndef USERDB_H
 #define USERDB_H
 
-#define DB_URL "jdbc:mariadb://localhost:3306/userInfo"
+#define DB_URL "jdbc:mariadb://3.143.218.37:5005/userInfo"
 #define USER "root"
 #define PASS "newpassword"
 
