@@ -5,7 +5,6 @@
 #include "userEntry.h"
 
 
-
 UserDB::UserDB() {
   	// Instantiate Driver
   	driver = sql::mariadb::get_driver_instance();
@@ -34,6 +33,8 @@ UserDB::UserDB() {
    	
 }
 
+
+// Pulls user info from database when they attempt to login.
 bool userDB::confirmUser(string user, string pass ) {
 	
 	
@@ -56,6 +57,8 @@ bool userDB::confirmUser(string user, string pass ) {
 	}
 }
 
+
+// Registers a user when they attempt to sign up.
 void userDB::registerUser(string username,string email,string password){
 
 	if (!conn) {
@@ -67,6 +70,7 @@ void userDB::registerUser(string username,string email,string password){
 
   	stmnt->executeQuery("INSERT INTO userInfo(Username,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
 }
+
 
 userEntry userDB::fetchEntry(string id){
 
