@@ -93,8 +93,13 @@ string decodeURIComponent(const string &encoded) {
 
 int main(void) {
   Server svr;
+	userDB userObject;
   int nextUser=0;
   map<string,vector<string>> messageMap;
+	vector<string> emailVector;
+  vector<string> passwordVector;
+  vector<string> usernameVector;
+  bool registered = false;
 	
   /* "/" just returnsAPI name */
   svr.Get("/", [](const Request & /*req*/, Response &res) {
@@ -107,8 +112,9 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     string email = req.matches[2];
     string password = req.matches[3];
     string error;
-
+	userObject.registerUser(username,email,password);
     bool registrationSuccessful = userManager.registerUser(username, email, password, error);
+	
 
     // Return the appropriate response
     string result;
@@ -128,7 +134,7 @@ svr.Get(R"(/chat/register/(.*)/(.*)/(.*))", [&](const Request& req, Response& re
     string password = req.matches[2];
     string error;
 	string result;
-
+	userObject.confirmUser(username,password);
     if (!userManager.userExists(username)) {
         result = "{\"status\":\"fail\",\"error\":\"User not registered\"}";
     } else {
