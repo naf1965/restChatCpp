@@ -104,7 +104,7 @@ void UserDB::addEntry(string username,string email,string password){
 
 userEntry UserDB::fetchEntry(string id){
 
-	contactEntry entry;	
+	userEntry entry;	
 	
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
