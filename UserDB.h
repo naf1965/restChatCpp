@@ -26,10 +26,10 @@
 
 using namespace std;
 
-class UserDB {
+class userDB {
 public:
-    UserDB();
-    vector<userEntry> find(string email);
+    userDB();
+    bool confirm(string user, string pass);
     userEntry fetchEntry(string id);
     void addEntry(string username,string email,string password);
 private:
