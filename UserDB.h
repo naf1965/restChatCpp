@@ -26,9 +26,9 @@
 
 using namespace std;
 
-class userDB {
+class UserDB {
 public:
-    userDB();
+    UserDB();
     vector<userEntry> find(string email);
     userEntry fetchEntry(string id);
     void addEntry(string username,string email,string password);
