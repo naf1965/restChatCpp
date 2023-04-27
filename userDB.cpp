@@ -58,7 +58,7 @@ return false;
 }
 
 
-void UserDB::registerUser(string username,string email,string password){
+void userDB::registerUser(string username,string email,string password){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
@@ -70,7 +70,7 @@ void UserDB::registerUser(string username,string email,string password){
   	stmnt->executeQuery("INSERT INTO userInfo(Username,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
 }
 
-userEntry UserDB::fetchEntry(string id){
+userEntry userDB::fetchEntry(string id){
 
 	userEntry entry;	
 	
