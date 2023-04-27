@@ -34,38 +34,8 @@ UserDB::UserDB() {
    	
 }
 
-vector<userEntry> UserDB::find(string search) {
-
-	vector<userEntry> list;
-    
-    // Make sure the connection is still valid
-    if (!conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-   	}	
-    // Create a new Statement
-	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
-    
-    // Execute query
-    sql::ResultSet *res = stmnt->executeQuery(
-			"SELECT * FROM userInfo WHERE Username like '%"+search+"%' OR "+
-    		 + "Password like '%"+search+"%' OR " +
-    		 + "Email like '%"+search+"%'");
-    
-    // Loop through and print results
-    while (res->next()) {
-    	contactEntry entry(res->getString("Username"),res->getString("Password"),
-		res->getString("Email"),res->getString("ID"));
-	    	
-	    list.push_back(entry);
-
-    }
-    return list;
-
-}
-
-vector<userEntry> UserDB::findByEmail(string email) {
-	vector<userEntry> list;
+bool userDB::confirmUser(string user, string pass ) {
+	
 	
     // Make sure the connection is still valid
     if (!conn) {
@@ -74,23 +44,21 @@ vector<userEntry> UserDB::findByEmail(string email) {
    	}	
     // Create a new Statement
 	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
+    cout<<"bfr qry"<<endl;
     
     // Execute query
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM userInfo WHERE Email like '%"+email+"%'");
-    
-    // Loop through and print results
-    while (res->next()) {
-    	userEntry entry(res->getString("Username"),res->getString("Email"),
-			res->getString("Password"),res->getString("ID"));
-	    	
-	    list.push_back(entry);
+    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM User_table WHERE username = '"+user+"'and pass = '"+pass+"'");
+    cout<<"aft qry"<<endl;
+	
+	if(res->next()){
 
-    }
-    return list;
-
+	return true;
+}else{
+return false;
 }
 
-void UserDB::addEntry(string username,string email,string password){
+
+void UserDB::registerUser(string username,string email,string password){
 
 	if (!conn) {
    		cerr << "Invalid database connection" << endl;
