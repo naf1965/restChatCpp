@@ -21,6 +21,7 @@ using namespace std;
 
 const int port = 5005;
 UserManager userManager;
+UserDB UserDB;
 
 void addMessage(string username, string message, map<string,vector<string>> &messageMap) {
     /* iterate through users adding message to each */
@@ -91,7 +92,6 @@ string decodeURIComponent(const string &encoded) {
 
 
 int main(void) {
-  UserDB userDB;
   Server svr;
   int nextUser=0;
   map<string,vector<string>> messageMap;
