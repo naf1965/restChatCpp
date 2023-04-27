@@ -21,7 +21,7 @@ using namespace std;
 
 const int port = 5005;
 UserManager userManager;
-UserDB userDB;
+userDB userDB;
 
 void addMessage(string username, string message, map<string,vector<string>> &messageMap) {
     /* iterate through users adding message to each */
