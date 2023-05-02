@@ -17,7 +17,12 @@ document.getElementById('leave').style.display = 'none';
 
 // Action if they push the join button
 document.getElementById('login-btn').addEventListener("click", (e) => {
-loginUser();
+	loginUser();
+})
+
+// Action if they push the register button
+document.getElementById('register-btn').addEventListener("click", (e) => {
+	registerUser();
 })
 
 
