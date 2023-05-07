@@ -86,3 +86,24 @@ vector<string> userDB::users() {
 
     return userList;
 }
+
+userEntry userDB::fetchEntryByUsername(string username) {
+    userEntry entry;
+
+    if (!conn) {
+        cerr << "Invalid database connection" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    std::unique_ptr<sql::PreparedStatement> pstmt(conn->prepareStatement("SELECT * FROM users WHERE username = ?"));
+    pstmt->setString(1, username);
+    std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+
+    if (res->next()) {
+        entry.setUsername(res->getString("username"));
+        entry.setEmail(res->getString("email"));
+        entry.setPassword(res->getString("password"));
+}
+    return entry;
+}
+       
