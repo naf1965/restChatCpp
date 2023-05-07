@@ -1,25 +1,22 @@
-#include <mariadb/conncpp.hpp>
+#ifndef CONTACTENTRY_H
+#define CONTACTENTRY_H
+
 #include <string>
-using namespace std;
+#include <mariadb/conncpp.hpp>
 
-#ifndef USERENTRY_H
-#define USERENTRY_H
+using std::string;
+using sql::SQLString;
 
-class userEntry {
+class contactEntry {
 public:
-     userEntry();
-     userEntry(sql::SQLString n, sql::SQLString e, sql::SQLString p, sql::SQLString I);
-     string text();
-     string json();
-     
-     string username;
-     string ID;
-     string email;
-     string password;
+    contactEntry();
+    contactEntry(SQLString u, SQLString e, SQLString p);
+    string text();
+    string json();
 
-private:
-
+    SQLString username;
+    SQLString email;
+    SQLString password;
 };
 
-#endif /* USERENTRY_H */
-
+#endif
