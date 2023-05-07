@@ -1,49 +1,37 @@
-#include <stdlib.h>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
-/* uncomment for applications that use vectors */
 #include <vector>
-
-//#include "mysql_connection.h"
-//#include "mysql_driver.h"
-#include <mariadb/conncpp.hpp>
-
-//#include <cppconn/driver.h>
-//#include <cppconn/exception.h>
-//#include <cppconn/resultset.h>
-//#include <cppconn/statement.h>
-//#include <cppconn/prepared_statement.h>
+#include <mariadb++/account.hpp>
+#include <mariadb++/connection.hpp>
 #include "userEntry.h"
 
 #ifndef USERDB_H
 #define USERDB_H
 
-#define DB_URL "jdbc:mariadb://localhost:3306/userInfo"
+#define DB_URL "localhost"
 #define USER "root"
 #define PASS "newpassword"
+#define DB_NAME "userInfo"
 
 using namespace std;
 
 class userDB {
 public:
     userDB();
-    userEntry fetchEntry(string id);
-    bool confirmUser(string user, string pass); // Called in restChat.cpp in the login microservice
-    void addEntry(string username,string email,string password); // Called in restChat.cpp in the register microservice
+    userEntry fetchEntryByUsername(string username);
+    bool confirmUser(string user, string pass);
+    void addEntry(string username,string email,string password);
     bool validEmail(string email);
     bool validName(string user);
     vector<string> users();
 private:
-    const string db_url=DB_URL;
-    const string user=USER;
-    const string pass=PASS;
-    sql::Driver* driver;
-    sql::Properties properties;
-    std::unique_ptr<sql::Connection> conn;
-
+    const string db_url = DB_URL;
+    const string user = USER;
+    const string pass = PASS;
+    const string db_name = DB_NAME;
+    mariadb::connection_ref conn;
 };
-
 
 #endif /* USERDB_H */
