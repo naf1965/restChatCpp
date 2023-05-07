@@ -3,16 +3,15 @@
 userEntry::userEntry() {
 }
 
-userEntry::userEntry(sql::SQLString u, sql::SQLString e, sql::SQLString p, sql::SQLString I) {
+userEntry::userEntry(sql::SQLString u, sql::SQLString e, sql::SQLString p) {
     username = u;
     email = e;
     password = p;
-    ID=I;
   
 }
 
 string userEntry::text() {
-	string result = ID + ". ";
+	string result;
 	result += username + " ";
 	result += email + " ";
 	result += password;
@@ -21,7 +20,7 @@ string userEntry::text() {
 }
 
 string userEntry::json() {
-	string result = "{\"ID\":\"" + ID + "\",";
+	string result;
 	result += "\"username\":\"" + username + "\",";
 	result += "\"email\":\"" + email + "\",";
 	result += "\"password\":\"" + password + "\"}";
