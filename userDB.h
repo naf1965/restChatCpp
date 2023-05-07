@@ -20,7 +20,7 @@
 #ifndef USERDB_H
 #define USERDB_H
 
-#define DB_URL "jdbc:mariadb://3.143.218.37:5005/userInfo"
+#define DB_URL "jdbc:mariadb://localhost:3306/userInfo"
 #define USER "root"
 #define PASS "newpassword"
 
@@ -31,7 +31,8 @@ public:
     userDB();
     userEntry fetchEntry(string id);
     bool confirmUser(string user, string pass); // Called in restChat.cpp in the login microservice
-    void registerUser(string username,string email,string password); // Called in restChat.cpp in the register microservice
+    void addEntry(string username,string email,string password); // Called in restChat.cpp in the register microservice
+    vector<string> users();
 private:
     const string db_url=DB_URL;
     const string user=USER;
