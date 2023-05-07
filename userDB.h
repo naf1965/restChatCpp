@@ -32,6 +32,8 @@ public:
     userEntry fetchEntry(string id);
     bool confirmUser(string user, string pass); // Called in restChat.cpp in the login microservice
     void addEntry(string username,string email,string password); // Called in restChat.cpp in the register microservice
+    bool validEmail(string email);
+    bool validName(string user);
     vector<string> users();
 private:
     const string db_url=DB_URL;
