@@ -1,95 +1,88 @@
-#include <vector>
 #include <iostream>
 #include <mariadb/conncpp.hpp>
-#include "UserDB.h"
+#include "userDB.h"
 #include "userEntry.h"
 
+using std::cerr;
+using std::endl;
 
-UserDB::UserDB() {
-  	// Instantiate Driver
-  	driver = sql::mariadb::get_driver_instance();
-  	
- 	// Configure Connection
-  	// The URL or TCP connection string format is
-  	// ``jdbc:mariadb://host:port/database``.
-  	sql::SQLString url(db_url);
+userDB::userDB() {
+    // Instantiate Driver
+    driver = sql::mariadb::get_driver_instance();
+    
+    // Configure Connection
+    sql::SQLString url(db_url);
 
     // Use a properties map for the other connection options
-  	sql::Properties my_properties({{"user", user}, {"password",pass}});
-  	// Save properties in object
-  	properties = my_properties;
+    sql::Properties my_properties({{"user", user}, {"password", pass}});
+    // Save properties in object
+    properties = my_properties;
 
     // Establish Connection
-  	std::unique_ptr<sql::Connection> my_conn(driver->connect(db_url, properties));
+    std::unique_ptr<sql::Connection> my_conn(driver->connect(db_url, properties));
     
     // Check success
     if (!my_conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-   	}	
-   	
-   	// Save connection in object
-   	conn = std::move(my_conn);
-   	
-}
-
-
-// Pulls user info from database when they attempt to login.
-bool userDB::confirmUser(string user, string pass ) {
-	
-	
-    // Make sure the connection is still valid
-    if (!conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-   	}	
-    // Create a new Statement
-	std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
-    
-    // Execute query
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM User_table WHERE username = '"+user+"'and pass = '"+pass+"'");
-	
-	if(res->next()){
-
-		return true;
-	}else{
-		return false;
-	}
-}
-
-
-// Registers a user when they attempt to sign up.
-void userDB::registerUser(string username,string email,string password){
-
-	if (!conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-  	}
-
-  	std::auto_ptr<sql::Statement> stmnt(conn->createStatement());
-
-  	stmnt->executeQuery("INSERT INTO userInfo(Username,Email,Password) VALUES ('"+username+"','"+email+"','"+password+"')");
-}
-
-
-userEntry userDB::fetchEntry(string id){
-
-	userEntry entry;	
-	
-	if (!conn) {
-   		cerr << "Invalid database connection" << endl;
-   		exit (EXIT_FAILURE);
-  	}
-
-  	std::auto_ptr<sql::Statement> stmnt(conn->createStatement());
-
-  	
-    sql::ResultSet *res = stmnt->executeQuery("SELECT * FROM userInfo WHERE ID = '"+id+"'");
-    
-    // Get first entry
-    if (res->next()) {
-    	entry = userEntry(res->getString("Username"),res->getString("Email"),
-			res->getString("Password"),res->getString("ID"));
+        cerr << "Invalid database connection" << endl;
+        exit(EXIT_FAILURE);
     }
-    return entry;
+    
+    // Save connection in object
+    conn = std::move(my_conn);
+}
+
+bool userDB::validEmail(const string& email) {
+    std::unique_ptr<sql::PreparedStatement> pstmt(conn->prepareStatement("SELECT COUNT(*) as count FROM users WHERE email = ?"));
+    pstmt->setString(1, email);
+    std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+
+    if (res->next()) {
+        return res->getInt("count") == 0;
+    }
+
+    return false;
+}
+
+bool userDB::validName(const string& user) {
+    std::unique_ptr<sql::PreparedStatement> pstmt(conn->prepareStatement("SELECT COUNT(*) as count FROM users WHERE username = ?"));
+    pstmt->setString(1, user);
+    std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+
+    if (res->next()) {
+        return res->getInt("count") == 0;
+    }
+
+    return false;
+}
+
+void userDB::addEntry(const string& username, const string& email, const string& password) {
+    if (!conn) {
+        cerr << "Invalid database connection" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    if (validEmail(email) && validName(username)) {
+        std::unique_ptr<sql::Statement> stmt(conn->createStatement());
+        stmt->execute("INSERT INTO users (username, email, password) VALUES ('" + username + "','" + email + "','" + password + "')");
+    } else {
+        cerr << "The email or username is not unique. Please try again with different values." << endl;
+    }
+}
+
+vector<string> userDB::users() {
+    vector<string> userList;
+
+    if (!conn) {
+        cerr << "Invalid database connection" << endl;
+        exit(EXIT_FAILURE);
+    }
+
+    std::unique_ptr<sql::Statement> stmt(conn->createStatement());
+    std::unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT username FROM users"));
+
+    while (res->next()) {
+        userList.push_back(res->getString("username"));
+    }
+
+    return userList;
 }
